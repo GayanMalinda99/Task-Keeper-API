@@ -1,13 +1,19 @@
 const router = require("express").Router();
-const Task = require("../models/Task");
 const tasks = [];
+let id = 0;
 
 //Create a task
 router.post("/tasks", async (req, res) => {
-  const newTask = new Task(req.body);
   try {
-    const savedTask = await newTask.save();
-    res.status(200).json(savedTask);
+    const { title, description } = req.body;
+    const task = {
+      title: title,
+      description: description,
+      id: id + 1,
+    };
+    tasks.push(task);
+    id++;
+    res.status(200).json(task);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -28,23 +34,31 @@ router.get("/tasks", async (req, res) => {
 
 //Get a specific task
 router.get("/task/:id", async (req, res) => {
-    try {
-      const task = await tasks.findById(req.params.id);
-      res.status(200).json(task);
-    } catch (err) {
-      res.status(404).json("Task not found");
-    }
+  const id = req.params.id;
+  const task = tasks.find((task) => task.id == id);
+  if (task) {
+    return res.status(200).json({ task: task });
+  } else {
+    return res.status(404).json("Task not found");
+  }
 });
 
-//Edit a task
+//Edit a specific task
 router.put("/tasks/:id", async (req, res) => {
   try {
-    const task = await tasks.findById(req.params.id);
-    if (task.taskId === req.body.taskId) {
-      await post.updateOne({ $set: req.body });
-      res.status(200).json("The task has been updated");
+    const id = req.params.id;
+    const { title, description } = req.body;
+    const task = tasks.find((task) => task.id == id);
+    if (task) {
+      if (title) {
+        task.title = title;
+      }
+      if (description) {
+        task.description = description;
+      }
+      return res.status(200).json(task);
     } else {
-      res.status(404).json("You can not update this task. Please try again");
+      return res.status(404).json("Task not found");
     }
   } catch (err) {
     res.status(500).json(err);
@@ -54,17 +68,17 @@ router.put("/tasks/:id", async (req, res) => {
 //Delete a specific task
 router.delete("/tasks/:id", async (req, res) => {
   try {
-    const task = await tasks.findById(req.params.id);
-    if (task.taskId === req.body.taskId) {
-      await task.deleteOne();
-      res.status(200).json("The task has been deleted");
+    const id = req.params.id;
+    const task = tasks.find((task) => task.id == id);
+    if (task) {
+      tasks.splice(tasks.indexOf(task), 1);
+      return res.status(200).json(task.title  + " removed successfully");
     } else {
-      res.status(404).json("Task can not delete");
+      return res.status(404).json("Task not found");
     }
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-module.exports = router;
 
