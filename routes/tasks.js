@@ -85,4 +85,6 @@ router.delete("/tasks/:id", taskValidation, (req, res) => {
   }
 });
 
+module.exports = router;
+
 
