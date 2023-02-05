@@ -1,5 +1,8 @@
 const router = require("express").Router();
-import { createTaskValidation, taskValidation } from "../middleware/taskRequestValidation.js";
+import {
+  createTaskValidation,
+  taskValidation,
+} from "../middleware/taskRequestValidation.js";
 const tasks = [];
 let id = 0;
 
