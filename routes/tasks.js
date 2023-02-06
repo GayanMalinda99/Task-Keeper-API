@@ -1,4 +1,5 @@
-const router = require("express").Router();
+import express from 'express';
+const router = express.Router();
 import {
   createTaskValidation,
   taskValidation,
@@ -85,6 +86,6 @@ router.delete("/tasks/:id", taskValidation, (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
 
 

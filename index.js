@@ -1,9 +1,9 @@
-const express = require("express");
+import express from 'express';
 const app = express();
-const helmet = require("helmet");
-const morgan = require("morgan");
+import helmet from 'helmet';
+import morgan from 'morgan';
 
-const taskRoute = require("./routes/tasks");
+import taskRoute from './routes/tasks.js';
 
 //Middleware
 app.use(express.json());
