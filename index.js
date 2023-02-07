@@ -2,6 +2,7 @@ import express from 'express';
 const app = express();
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from "cors";
 
 import taskRoute from './routes/tasks.js';
 
@@ -9,6 +10,8 @@ import taskRoute from './routes/tasks.js';
 app.use(express.json());
 app.use(helmet());
 app.use(morgan("common"));
+app.use(cors());
+
 
 app.use("/", taskRoute);
 
