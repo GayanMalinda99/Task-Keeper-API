@@ -8,8 +8,9 @@ const tasks = [];
 let id = 0;
 
 //Create a task
-router.post("/tasks", createTaskValidation, (req, res) => {
+router.post("/tasks", (req, res) => {
   try {
+    console.log("create a task");
     const { title, description } = req.body;
     const task = {
       title: title,
@@ -20,6 +21,7 @@ router.post("/tasks", createTaskValidation, (req, res) => {
     id++;
     res.status(200).json(task);
   } catch (err) {
+    console.log("create a task - err");
     res.status(500).json(err);
   }
 });
@@ -38,7 +40,7 @@ router.get("/tasks", (req, res) => {
 });
 
 //Get a specific task
-router.get("/task/:id", taskValidation, (req, res) => {
+router.get("/task/:id", (req, res) => {
   const id = req.params.id;
   const task = tasks.find((task) => task.id == id);
   if (task) {
@@ -49,7 +51,7 @@ router.get("/task/:id", taskValidation, (req, res) => {
 });
 
 //Edit a specific task
-router.put("/tasks/:id", taskValidation, (req, res) => {
+router.put("/tasks/:id", (req, res) => {
   try {
     const id = req.params.id;
     const { title, description } = req.body;
@@ -71,7 +73,7 @@ router.put("/tasks/:id", taskValidation, (req, res) => {
 });
 
 //Delete a specific task
-router.delete("/tasks/:id", taskValidation, (req, res) => {
+router.delete("/tasks/:id", (req, res) => {
   try {
     const id = req.params.id;
     const task = tasks.find((task) => task.id == id);
